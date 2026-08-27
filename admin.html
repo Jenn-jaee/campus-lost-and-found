@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Campus Lost &amp; Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- ── Navigation ─────────────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%">
+      <a href="index.html" class="nav-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#0CAF7D"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+        <span>Lost &amp; Found</span>
+      </a>
+      <!-- Admin badge -->
+      <span class="admin-badge">Admin Mode</span>
+      <div class="nav-right">
+        <div id="nav-logged-out" style="display:flex;align-items:center;gap:12px;">
+          <a href="report-lost.html" class="btn btn-report">+ Report Item</a>
+          <a href="login.html" class="btn btn-ghost">Log In</a>
+          <a href="login.html?tab=register" class="btn btn-primary">Sign Up</a>
+        </div>
+        <div id="nav-logged-in" style="display:none;align-items:center;gap:12px;">
+          <a href="report-lost.html" class="btn btn-report">+ Report Item</a>
+          <div style="position:relative">
+            <div class="user-avatar" id="user-avatar" title="Account menu"><span id="avatar-initial">U</span></div>
+            <div class="avatar-dropdown" id="avatar-dropdown">
+              <!-- Back to Browse (admin extra) -->
+              <a href="index.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:14px;color:#1E1E2E;text-decoration:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Browse
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="my-claims.html" style="display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:14px;color:#1E1E2E;text-decoration:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                My Claims
+              </a>
+              <div class="dropdown-divider"></div>
+              <button id="logout-btn" style="background:none;border:none;width:100%;text-align:left;padding:10px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:14px;font-family:Inter,sans-serif;color:#1E1E2E;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Page content ────────────────────────────────────────────────────── -->
+  <main class="page-content">
+    <div class="container" style="padding-top:28px;padding-bottom:48px;">
+
+      <!-- Page header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;">
+        <div>
+          <h1 style="font-size:24px;font-weight:700;color:#1E1E2E;margin-bottom:4px;">Admin Dashboard</h1>
+          <p style="font-size:14px;color:#9CA3AF;margin:0;">Manage all lost &amp; found reports</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button id="view-active-btn" class="btn btn-primary" style="font-size:13px;height:36px;padding:0 16px;">Active Board</button>
+          <button id="view-archive-btn" class="btn btn-ghost" style="font-size:13px;height:36px;padding:0 16px;">Archive</button>
+        </div>
+      </div>
+
+      <!-- Summary strip -->
+      <div class="summary-strip" style="margin-bottom:28px;">
+        <!-- Active -->
+        <div class="summary-card">
+          <div class="summary-icon" style="background:#FEE2E2;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="summary-body">
+            <div class="summary-label">Active</div>
+            <div class="summary-number" id="count-active">—</div>
+          </div>
+        </div>
+        <!-- Under Review -->
+        <div class="summary-card">
+          <div class="summary-icon" style="background:#FEF3C7;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="summary-body">
+            <div class="summary-label">Under Review</div>
+            <div class="summary-number" id="count-review">—</div>
+          </div>
+        </div>
+        <!-- Claimed -->
+        <div class="summary-card">
+          <div class="summary-icon" style="background:#DBEAFE;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="summary-body">
+            <div class="summary-label">Claimed</div>
+            <div class="summary-number" id="count-claimed">—</div>
+          </div>
+        </div>
+        <!-- Resolved (archive) -->
+        <div class="summary-card" style="cursor:pointer;" id="summary-resolved" title="View archive">
+          <div class="summary-icon" style="background:#F3F4F6;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="summary-body">
+            <div class="summary-label">Resolved</div>
+            <div class="summary-number" id="count-resolved">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Archive section (hidden by default) ────────────────────────── -->
+      <div id="archive-section" style="display:none;background:#ffffff;border:1px solid #E5E7EB;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;margin-bottom:28px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #E5E7EB;">
+          <div>
+            <span style="font-size:15px;font-weight:600;color:#1E1E2E;">Resolved Archive</span>
+            <span style="font-size:13px;color:#9CA3AF;margin-left:8px;">Auto-deleted after 30 days</span>
+          </div>
+        </div>
+        <div id="archive-loading" class="spinner" style="margin:32px auto;display:none;"></div>
+        <div id="archive-table-wrap" style="display:none;overflow-x:auto;">
+          <table class="reports-table" style="border:none;border-radius:0;">
+            <thead>
+              <tr>
+                <th style="width:80px;padding-left:20px;">Photo</th>
+                <th>Item</th>
+                <th style="width:210px;">Posted By</th>
+                <th style="width:160px;">Resolved</th>
+                <th style="width:160px;">Deletes In</th>
+                <th style="width:120px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="archive-table-body"></tbody>
+          </table>
+        </div>
+        <div id="archive-empty" class="empty-state" style="display:none;padding:48px 24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="empty-state-title">No archived reports</div>
+          <div class="empty-state-text">Resolved reports will appear here and be deleted after 30 days.</div>
+        </div>
+      </div>
+
+      <!-- Filter bar + table section -->
+      <div id="active-section" style="background:#ffffff;border:1px solid #E5E7EB;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;">
+
+        <!-- Section header with filter pills -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #E5E7EB;">
+          <span style="font-size:15px;font-weight:600;color:#1E1E2E;">All Reports</span>
+          <div class="filter-bar" id="filter-bar" style="margin:0;border:none;padding:0;background:none;gap:6px;">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="active">Active</button>
+            <button class="filter-pill" data-filter="under-review">Under Review</button>
+            <button class="filter-pill" data-filter="matched">Matched</button>
+            <button class="filter-pill" data-filter="claimed">Claimed</button>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="spinner" style="margin:32px auto;display:block;"></div>
+
+        <!-- Table -->
+        <div id="table-wrap" style="display:none;overflow-x:auto;">
+          <table class="reports-table" style="border:none;border-radius:0;" id="reports-table">
+            <thead>
+              <tr>
+                <th style="width:80px;padding-left:20px;">Photo</th>
+                <th>Item</th>
+                <th style="width:130px;">Status</th>
+                <th style="width:210px;">Posted By</th>
+                <th style="width:140px;">Date</th>
+                <th style="width:200px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Empty state -->
+        <div id="empty-state" class="empty-state" style="display:none;padding:48px 24px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <div class="empty-state-title">No reports found</div>
+          <div class="empty-state-text">No reports match this filter.</div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="footer-grid-inner">
+      <div class="footer-cols">
+        <div class="footer-brand-col">
+          <a href="landing.html" class="footer-logo-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0CAF7D" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+            Lost &amp; Found
+          </a>
+          <p class="footer-brand-desc">Helping campus students report, find, and recover lost belongings — quickly, securely, and fairly.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="report-lost.html">Report Lost Item</a></li>
+            <li><a href="report-found.html">Report Found Item</a></li>
+            <li><a href="my-claims.html">My Claims</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Account</h4>
+          <ul>
+            <li><a href="login.html">Log In</a></li>
+            <li><a href="login.html?tab=register">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="mailto:obinwannejennifer@gmail.com">Contact Admin</a></li>
+            <li><a href="landing.html">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Campus Lost &amp; Found. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /.page-wrapper -->
+
+<script type="module">
+  import { requireAdmin } from './js/router.js';
+  import { logout, isAdmin } from './js/auth.js';
+  import { getAllPosts, resolvePost, adminDeletePost } from './js/admin.js';
+  import { deletePost } from './js/posts.js';
+  import { getClaimsForPost, confirmClaim } from './js/claims.js';
+  import {
+    showToast,
+    badgeClass,
+    formatRelativeTime,
+    getItemIcon,
+    initNavAuth,
+    initDropdownMenu,
+    escapeHtml,
+    escapeAttr
+  } from './js/ui.js';
+
+  // ── Module-level state ─────────────────────────────────────────────────────
+  let currentFilter = 'all';
+  let currentView   = 'active'; // 'active' | 'archive'
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  /** Show or hide the spinner / table / empty-state */
+  function setTableState(state) {
+    document.getElementById('loading').style.display     = state === 'loading' ? 'block' : 'none';
+    document.getElementById('table-wrap').style.display  = state === 'table'   ? 'block' : 'none';
+    document.getElementById('empty-state').style.display = state === 'empty'   ? 'flex'  : 'none';
+  }
+
+  /** Build a single table row HTML string */
+  function buildRow(post) {
+    const thumb = post.photoUrl
+      ? `<img src="${escapeAttr(post.photoUrl)}" alt="${escapeAttr(post.name)}">`
+      : getItemIcon(post.itemType);
+
+    const resolveBtn = post.status !== 'resolved'
+      ? `<button class="btn btn-success" data-action="resolve" data-id="${escapeAttr(post.id)}">Resolve</button>`
+      : '';
+
+    const claimsBtn = (post.status === 'under-review' || post.status === 'claimed')
+      ? `<button class="btn btn-ghost" style="font-size:12px;height:28px;padding:0 10px;" data-action="view-claims" data-id="${escapeAttr(post.id)}">Claims</button>`
+      : '';
+
+    return `
+      <tr class="${post.status === 'resolved' ? 'resolved-row' : ''}" data-id="${escapeAttr(post.id)}">
+        <td style="padding-left:20px;"><div class="table-thumb">${thumb}</div></td>
+        <td>
+          <div class="table-item-name">${escapeHtml(post.name)}</div>
+          <div class="table-item-type">${escapeHtml(post.itemType)}</div>
+        </td>
+        <td><span class="badge ${badgeClass(post.status)}">${escapeHtml(post.status)}</span></td>
+        <td style="font-size:14px;color:#6B7280;">${escapeHtml(post.email || '')}</td>
+        <td style="font-size:13px;color:#6B7280;">${escapeHtml(formatRelativeTime(post.createdAt))}</td>
+        <td>
+          <div class="table-actions" id="actions-${escapeAttr(post.id)}">
+            ${claimsBtn}
+            ${resolveBtn}
+            <button class="btn btn-danger" data-action="delete" data-id="${escapeAttr(post.id)}">Delete</button>
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  /** Toggle an inline claims sub-row for a post */
+  async function toggleClaimsRow(postId) {
+    const existing = document.getElementById(`claims-row-${postId}`);
+    if (existing) { existing.remove(); return; }
+
+    const postRow = document.querySelector(`tr[data-id="${postId}"]`);
+    if (!postRow) return;
+
+    const loadingRow = document.createElement('tr');
+    loadingRow.id = `claims-row-${postId}`;
+    loadingRow.innerHTML = `<td colspan="6" style="padding:16px 20px;background:#F9FAFB;"><div style="display:flex;justify-content:center;"><div class="spinner" style="width:24px;height:24px;border-width:2px;margin:0;"></div></div></td>`;
+    postRow.insertAdjacentElement('afterend', loadingRow);
+
+    try {
+      const claims = await getClaimsForPost(postId);
+      const cell = loadingRow.querySelector('td');
+
+      if (claims.length === 0) {
+        cell.innerHTML = `<p style="text-align:center;color:#6B7280;font-size:14px;padding:4px 0;">No claims submitted yet.</p>`;
+        return;
+      }
+
+      const claimsHtml = claims.map(c => {
+        const bCls = badgeClass(c.status || 'pending');
+        const confirmBtn = (c.status === 'pending')
+          ? `<button class="btn btn-success" style="font-size:12px;height:28px;padding:0 10px;" data-action="confirm-claim" data-claim-id="${escapeAttr(c.id)}" data-post-id="${escapeAttr(postId)}">Confirm Owner</button>`
+          : '';
+        return `
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #E5E7EB;">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:14px;font-weight:600;color:#1E1E2E;">${escapeHtml(c.userName || c.userEmail || '')}</div>
+              <div style="font-size:12px;color:#6B7280;">${escapeHtml(c.userEmail || '')} · ${escapeHtml(formatRelativeTime(c.createdAt))}</div>
+              ${c.ownershipNote ? `<div style="font-size:13px;color:#374151;margin-top:4px;font-style:italic;">"${escapeHtml(c.ownershipNote)}"</div>` : ''}
+            </div>
+            <span class="badge ${bCls}" style="font-size:11px;flex-shrink:0;">${escapeHtml(c.status || 'pending')}</span>
+            ${confirmBtn}
+          </div>`;
+      }).join('');
+
+      cell.innerHTML = `
+        <div style="padding:4px 0;">
+          <div style="font-size:14px;font-weight:600;color:#1E1E2E;margin-bottom:8px;">Claims (${claims.length})</div>
+          ${claimsHtml}
+        </div>`;
+    } catch (err) {
+      console.error(err);
+      loadingRow.querySelector('td').innerHTML = `<p style="text-align:center;color:#EF4444;font-size:14px;">Failed to load claims.</p>`;
+    }
+  }
+
+  /** Inject a confirmation tooltip into the actions cell */
+  function showConfirmTooltip(postId, actionType) {
+    // Remove any existing tooltip first
+    removeTooltip(postId);
+
+    const actionsDiv = document.getElementById(`actions-${postId}`);
+    if (!actionsDiv) return;
+
+    const confirmBtnClass = actionType === 'delete' ? 'btn-danger' : 'btn-success';
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'confirm-tooltip open';
+    tooltip.id        = `tooltip-${postId}`;
+    tooltip.innerHTML = `
+      <p>Are you sure?</p>
+      <div class="confirm-actions">
+        <button class="btn ${confirmBtnClass}" style="font-size:12px;height:28px;padding:0 10px;" data-confirm="yes" data-id="${escapeAttr(postId)}" data-action="${escapeAttr(actionType)}">Confirm</button>
+        <button class="btn btn-ghost-gray" style="font-size:12px;height:28px;padding:0 10px;" data-confirm="cancel" data-id="${escapeAttr(postId)}">Cancel</button>
+      </div>`;
+
+    // Insert above the action buttons
+    actionsDiv.insertBefore(tooltip, actionsDiv.firstChild);
+  }
+
+  function removeTooltip(postId) {
+    const existing = document.getElementById(`tooltip-${postId}`);
+    if (existing) existing.remove();
+  }
+
+  // ── Load table data ────────────────────────────────────────────────────────
+  function loadTable(filter, posts) {
+    // Active board never shows resolved or cancelled
+    let visible = posts.filter(p => p.status !== 'resolved' && p.status !== 'cancelled');
+
+    if (filter === 'active') {
+      visible = visible.filter(p => p.status === 'lost' || p.status === 'found');
+    } else if (filter !== 'all') {
+      visible = visible.filter(p => p.status === filter);
+    }
+
+    if (visible.length === 0) {
+      setTableState('empty');
+      return;
+    }
+
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = visible.map(buildRow).join('');
+    setTableState('table');
+  }
+
+  // ── Archive helpers ────────────────────────────────────────────────────────
+  function setArchiveState(state) {
+    document.getElementById('archive-loading').style.display    = state === 'loading' ? 'block' : 'none';
+    document.getElementById('archive-table-wrap').style.display = state === 'table'   ? 'block' : 'none';
+    document.getElementById('archive-empty').style.display      = state === 'empty'   ? 'flex'  : 'none';
+  }
+
+  function msToTimestamp(val) {
+    if (!val) return null;
+    if (typeof val.toMillis === 'function') return val.toMillis();
+    if (typeof val === 'string') return new Date(val).getTime();
+    return null;
+  }
+
+  function buildArchiveRow(post, daysLeft) {
+    const thumb = post.photoUrl
+      ? `<img src="${escapeAttr(post.photoUrl)}" alt="${escapeAttr(post.name)}">`
+      : getItemIcon(post.itemType);
+    const resolvedTs = msToTimestamp(post.resolvedAt);
+    const resolvedStr = resolvedTs ? new Date(resolvedTs).toLocaleDateString() : '—';
+    const daysStr = daysLeft <= 0 ? '<span style="color:#EF4444;font-weight:600;">Deleting…</span>'
+      : `<span style="color:${daysLeft <= 7 ? '#F59E0B' : '#6B7280'};">${daysLeft}d remaining</span>`;
+
+    return `
+      <tr data-id="${escapeAttr(post.id)}">
+        <td style="padding-left:20px;"><div class="table-thumb">${thumb}</div></td>
+        <td>
+          <div class="table-item-name">${escapeHtml(post.name)}</div>
+          <div class="table-item-type">${escapeHtml(post.itemType)}</div>
+        </td>
+        <td style="font-size:14px;color:#6B7280;">${escapeHtml(post.email || '')}</td>
+        <td style="font-size:13px;color:#6B7280;">${resolvedStr}</td>
+        <td style="font-size:13px;">${daysStr}</td>
+        <td>
+          <div class="table-actions">
+            <a href="item-detail?id=${escapeAttr(post.id)}" class="btn btn-ghost" style="font-size:12px;height:28px;padding:0 10px;" target="_blank">View</a>
+            <button class="btn btn-danger" data-action="archive-delete" data-id="${escapeAttr(post.id)}" style="font-size:12px;height:28px;padding:0 10px;">Delete</button>
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  async function loadArchive() {
+    setArchiveState('loading');
+    const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    let posts;
+    try {
+      posts = await getAllPosts();
+    } catch (err) {
+      console.error(err);
+      setArchiveState('empty');
+      return;
+    }
+
+    const resolved = posts.filter(p => p.status === 'resolved');
+
+    // Auto-delete posts older than 30 days
+    const toDelete = resolved.filter(p => {
+      const ts = msToTimestamp(p.resolvedAt);
+      return ts && (now - ts) > THIRTY_DAYS;
+    });
+    if (toDelete.length > 0) {
+      await Promise.all(toDelete.map(p => adminDeletePost(p.id).catch(() => {})));
+    }
+
+    const remaining = resolved.filter(p => {
+      const ts = msToTimestamp(p.resolvedAt);
+      return !ts || (now - ts) <= THIRTY_DAYS;
+    });
+
+    if (remaining.length === 0) {
+      setArchiveState('empty');
+      return;
+    }
+
+    remaining.sort((a, b) => (msToTimestamp(b.resolvedAt) || 0) - (msToTimestamp(a.resolvedAt) || 0));
+
+    const tbody = document.getElementById('archive-table-body');
+    tbody.innerHTML = remaining.map(p => {
+      const ts = msToTimestamp(p.resolvedAt);
+      const daysLeft = ts ? Math.ceil((THIRTY_DAYS - (now - ts)) / 86400000) : 30;
+      return buildArchiveRow(p, daysLeft);
+    }).join('');
+    setArchiveState('table');
+
+    tbody.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-action="archive-delete"]');
+      if (!btn) return;
+      if (!confirm('Permanently delete this archived report?')) return;
+      btn.disabled = true;
+      btn.textContent = '...';
+      try {
+        await adminDeletePost(btn.dataset.id);
+        showToast('Deleted', 'success');
+        await loadArchive();
+      } catch (err) {
+        console.error(err);
+        showToast('Delete failed', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Delete';
+      }
+    }, { once: true });
+  }
+
+  // ── View toggle ────────────────────────────────────────────────────────────
+  async function switchToArchive() {
+    if (currentView === 'archive') return;
+    currentView = 'archive';
+    document.getElementById('view-active-btn').className = 'btn btn-ghost';
+    document.getElementById('view-archive-btn').className = 'btn btn-primary';
+    document.getElementById('active-section').style.display  = 'none';
+    document.getElementById('archive-section').style.display = '';
+    await loadArchive();
+  }
+
+  function initViewToggle() {
+    document.getElementById('view-active-btn').addEventListener('click', () => {
+      if (currentView === 'active') return;
+      currentView = 'active';
+      document.getElementById('view-active-btn').className = 'btn btn-primary';
+      document.getElementById('view-archive-btn').className = 'btn btn-ghost';
+      document.getElementById('active-section').style.display  = '';
+      document.getElementById('archive-section').style.display = 'none';
+    });
+
+    document.getElementById('view-archive-btn').addEventListener('click', switchToArchive);
+
+    const summaryResolved = document.getElementById('summary-resolved');
+    if (summaryResolved) summaryResolved.addEventListener('click', switchToArchive);
+  }
+
+  // ── Event delegation for table actions ────────────────────────────────────
+  function attachTableListeners() {
+    const tbody = document.getElementById('table-body');
+
+    tbody.addEventListener('click', async (e) => {
+      const confirmYes    = e.target.closest('[data-confirm="yes"]');
+      const confirmCancel = e.target.closest('[data-confirm="cancel"]');
+
+      if (confirmYes) {
+        const postId     = confirmYes.dataset.id;
+        const actionType = confirmYes.dataset.action;
+
+        confirmYes.disabled = true;
+        confirmYes.textContent = '...';
+
+        try {
+          if (actionType === 'delete') {
+            await adminDeletePost(postId);
+            showToast('Report deleted', 'success');
+          } else {
+            await resolvePost(postId);
+            showToast('Report resolved', 'success');
+          }
+          await loadDashboard();
+        } catch (err) {
+          console.error(err);
+          showToast('Action failed. Please try again.', 'error');
+          removeTooltip(postId);
+        }
+        return;
+      }
+
+      if (confirmCancel) {
+        removeTooltip(confirmCancel.dataset.id);
+        return;
+      }
+
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+
+      // view-claims: toggle inline claims sub-row
+      if (btn.dataset.action === 'view-claims') {
+        await toggleClaimsRow(btn.dataset.id);
+        return;
+      }
+
+      // confirm-claim: set one claim as confirmed, dismiss others
+      if (btn.dataset.action === 'confirm-claim') {
+        const claimId = btn.dataset.claimId;
+        const postId  = btn.dataset.postId;
+        if (!confirm('Confirm this person as the rightful owner? All other claims will be dismissed.')) return;
+        btn.disabled = true;
+        btn.textContent = '...';
+        try {
+          await confirmClaim(claimId, postId);
+          showToast('Owner confirmed! Other claims dismissed.', 'success');
+          await loadDashboard();
+        } catch (err) {
+          console.error(err);
+          showToast('Failed to confirm owner.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Confirm Owner';
+        }
+        return;
+      }
+
+      // resolve / delete — show confirmation tooltip
+      showConfirmTooltip(btn.dataset.id, btn.dataset.action);
+    }, { capture: false });
+  }
+
+  // ── Load dashboard (counts + table) — single Firestore read ──────────────
+  async function loadDashboard() {
+    setTableState('loading');
+    let posts;
+    try {
+      posts = await getAllPosts();
+    } catch (err) {
+      console.error('Failed to load posts', err);
+      setTableState('empty');
+      return;
+    }
+
+    document.getElementById('count-active').textContent   = posts.filter(p => p.status === 'lost' || p.status === 'found').length;
+    document.getElementById('count-review').textContent   = posts.filter(p => p.status === 'under-review').length;
+    document.getElementById('count-claimed').textContent  = posts.filter(p => p.status === 'claimed').length;
+    document.getElementById('count-resolved').textContent = posts.filter(p => p.status === 'resolved').length;
+
+    loadTable(currentFilter, posts);
+  }
+
+  // ── Filter pills ───────────────────────────────────────────────────────────
+  function initFilterPills() {
+    const filterBar = document.getElementById('filter-bar');
+    filterBar.addEventListener('click', async (e) => {
+      const pill = e.target.closest('.filter-pill');
+      if (!pill) return;
+
+      // Update active state
+      filterBar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      currentFilter = pill.dataset.filter;
+      await loadDashboard();
+    });
+  }
+
+  // ── Bootstrap ──────────────────────────────────────────────────────────────
+  async function main() {
+    const user = await requireAdmin();
+    initNavAuth(user, isAdmin);
+    initDropdownMenu(logout);
+    initFilterPills();
+    initViewToggle();
+
+    attachTableListeners();
+    await loadDashboard();
+  }
+
+  main();
+</script>
+</body>
+</html>
