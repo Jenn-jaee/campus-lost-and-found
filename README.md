@@ -373,3 +373,5 @@ Academic project for Philander Smith University. Built with Firebase, Cloudinary
 <p align="center">
   <sub>Replace screenshot placeholders in <code>assets/screenshots/</code> before sharing the repo publicly.</sub>
 </p>
+
+<!-- repo metadata refresh -->
