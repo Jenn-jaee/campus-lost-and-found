@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Lost &amp; Found — Find What Matters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* ── Override page bg for landing ── */
+    body { background: #fff; overflow-x: hidden; }
+
+    /* ══════════════════════════════════
+       LANDING NAV
+    ══════════════════════════════════ */
+    .ln-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 64px;
+      display: flex; align-items: center;
+      padding: 0 32px;
+      background: rgba(10, 11, 18, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: background 0.3s;
+    }
+    .ln-nav-inner {
+      max-width: 1100px; width: 100%; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .ln-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 17px; font-weight: 700; color: #fff; text-decoration: none;
+    }
+    .ln-nav-btns { display: flex; align-items: center; gap: 10px; }
+    .ln-btn-ghost {
+      padding: 8px 18px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.22);
+      color: #fff; font-size: 14px; font-weight: 500; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ln-btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); }
+    .ln-btn-green {
+      padding: 8px 20px; border-radius: 8px; background: #0CAF7D;
+      color: #fff; font-size: 14px; font-weight: 600; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .ln-btn-green:hover { background: #099268; transform: translateY(-1px); }
+
+    /* ══════════════════════════════════
+       HERO
+    ══════════════════════════════════ */
+    .ln-hero {
+      position: relative; min-height: 100vh;
+      background: #0a0b12;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 80px; overflow: hidden;
+    }
+
+    /* Animated gradient orbs */
+    .ln-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.35; pointer-events: none;
+      animation: orb-drift 12s ease-in-out infinite alternate;
+    }
+    .ln-orb-1 {
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, #0CAF7D 0%, transparent 70%);
+      top: -120px; left: -80px; animation-duration: 14s;
+    }
+    .ln-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+      bottom: -100px; right: -60px; animation-duration: 10s; animation-delay: -4s;
+    }
+    .ln-orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+      top: 40%; left: 60%; animation-duration: 16s; animation-delay: -8s; opacity: 0.18;
+    }
+    @keyframes orb-drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* Floating item icons */
+    .ln-float-items { position: absolute; inset: 0; pointer-events: none; }
+    .ln-item {
+      position: absolute; font-size: 28px; opacity: 0.18;
+      animation: item-float linear infinite;
+    }
+    .ln-item:nth-child(1)  { top:12%; left:8%;  font-size:32px; animation-duration:7s; animation-delay:0s; }
+    .ln-item:nth-child(2)  { top:20%; left:82%; font-size:24px; animation-duration:9s; animation-delay:-2s; }
+    .ln-item:nth-child(3)  { top:65%; left:6%;  font-size:22px; animation-duration:11s; animation-delay:-4s; }
+    .ln-item:nth-child(4)  { top:70%; left:88%; font-size:30px; animation-duration:8s; animation-delay:-1s; }
+    .ln-item:nth-child(5)  { top:40%; left:4%;  font-size:20px; animation-duration:13s; animation-delay:-6s; }
+    .ln-item:nth-child(6)  { top:35%; left:91%; font-size:26px; animation-duration:10s; animation-delay:-3s; }
+    .ln-item:nth-child(7)  { top:82%; left:30%; font-size:22px; animation-duration:12s; animation-delay:-5s; }
+    .ln-item:nth-child(8)  { top:78%; left:65%; font-size:24px; animation-duration:9s; animation-delay:-7s; }
+    @keyframes item-float {
+      0%   { transform: translateY(0px) rotate(0deg); }
+      25%  { transform: translateY(-18px) rotate(4deg); }
+      75%  { transform: translateY(10px) rotate(-3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* Hero content */
+    .ln-hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(12,175,125,0.15); border: 1px solid rgba(12,175,125,0.35);
+      color: #0CAF7D; font-size: 13px; font-weight: 500;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+      animation: fade-up 0.6s ease both;
+    }
+    .ln-hero-badge-dot {
+      width: 7px; height: 7px; background: #0CAF7D; border-radius: 50%;
+      animation: pulse-dot 2s ease infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.75); }
+    }
+
+    .ln-hero-h1 {
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 800; line-height: 1.08; letter-spacing: -0.03em;
+      color: #fff; margin-bottom: 16px;
+      animation: fade-up 0.6s ease 0.1s both;
+    }
+    .ln-hero-h1 span {
+      background: linear-gradient(90deg, #0CAF7D, #34d399);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ln-hero-sub {
+      font-size: clamp(16px, 2vw, 20px); color: #9CA3AF; line-height: 1.6;
+      max-width: 560px; margin: 0 auto 40px;
+      animation: fade-up 0.6s ease 0.2s both;
+    }
+    .ln-hero-cta {
+      display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+      animation: fade-up 0.6s ease 0.3s both;
+    }
+    .ln-cta-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; background: #0CAF7D; color: #fff;
+      font-size: 15px; font-weight: 600; border-radius: 10px; text-decoration: none;
+      box-shadow: 0 0 0 0 rgba(12,175,125,0.5);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .ln-cta-primary:hover {
+      background: #099268; transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(12,175,125,0.4);
+    }
+    .ln-cta-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 15px; font-weight: 500; border-radius: 10px; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .ln-cta-secondary:hover {
+      background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll indicator */
+    .ln-scroll-hint {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.3); font-size: 12px; font-weight: 500;
+      animation: fade-up 0.6s ease 0.8s both;
+    }
+    .ln-scroll-arrow {
+      width: 24px; height: 24px;
+      animation: bounce-down 2s ease infinite;
+    }
+    @keyframes bounce-down {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* ══════════════════════════════════
+       SHARED SECTION STYLES
+    ══════════════════════════════════ */
+    .ln-section { padding: 88px 24px; }
+    .ln-section-alt { background: #F8F9FA; }
+
+    .ln-section-label {
+      text-align: center; font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #0CAF7D; margin-bottom: 14px;
+    }
+    .ln-section-title {
+      text-align: center; font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800; color: #1E1E2E; letter-spacing: -0.02em;
+      line-height: 1.15; margin-bottom: 14px;
+    }
+    .ln-section-sub {
+      text-align: center; font-size: 16px; color: #6B7280;
+      max-width: 520px; margin: 0 auto 56px; line-height: 1.6;
+    }
+    .ln-inner { max-width: 1100px; margin: 0 auto; }
+
+    /* ══════════════════════════════════
+       SCROLL REVEAL ANIMATION
+    ══════════════════════════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ══════════════════════════════════
+       HOW IT WORKS
+    ══════════════════════════════════ */
+    .ln-steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+    }
+    .ln-step-card {
+      background: #fff; border: 1px solid #E5E7EB; border-radius: 16px;
+      padding: 32px 28px; position: relative;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .ln-step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.09);
+      border-color: #0CAF7D;
+    }
+    .ln-step-number {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, #0CAF7D, #099268);
+      color: #fff; font-size: 17px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; flex-shrink: 0;
+    }
+    .ln-step-icon { font-size: 32px; margin-bottom: 16px; }
+    .ln-step-title { font-size: 18px; font-weight: 700; color: #1E1E2E; margin-bottom: 10px; }
+    .ln-step-text { font-size: 14px; color: #6B7280; line-height: 1.65; }
+
+    /* connector line between steps */
+    .ln-steps-wrap { position: relative; }
+    .ln-steps-connector {
+      display: none;
+      position: absolute; top: 52px; left: calc(33.33% + 14px); right: calc(33.33% + 14px);
+      height: 1px; background: linear-gradient(90deg, #0CAF7D, #6366f1);
+      z-index: 0;
+    }
+
+    /* ══════════════════════════════════
+       FEATURE CARDS
+    ══════════════════════════════════ */
+    .ln-features {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .ln-feature-card {
+      background: #fff; border: 1px solid #E5E7EB; border-radius: 14px;
+      padding: 28px 24px;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+      cursor: default;
+    }
+    .ln-feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(12,175,125,0.12);
+      border-color: rgba(12,175,125,0.4);
+    }
+    .ln-feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: #E8F8F2; color: #0CAF7D;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .ln-feature-title { font-size: 15px; font-weight: 700; color: #1E1E2E; margin-bottom: 8px; }
+    .ln-feature-text { font-size: 13px; color: #6B7280; line-height: 1.6; }
+
+    /* ══════════════════════════════════
+       STATS STRIP
+    ══════════════════════════════════ */
+    .ln-stats {
+      background: linear-gradient(135deg, #0CAF7D 0%, #099268 100%);
+      padding: 56px 24px;
+    }
+    .ln-stats-grid {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+      text-align: center;
+    }
+    .ln-stat-number {
+      font-size: clamp(32px, 5vw, 48px); font-weight: 800; color: #fff;
+      line-height: 1; margin-bottom: 8px;
+    }
+    .ln-stat-label { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); }
+
+    /* ══════════════════════════════════
+       FINAL CTA
+    ══════════════════════════════════ */
+    .ln-cta-section {
+      padding: 96px 24px; background: #fff; text-align: center;
+    }
+    .ln-cta-box {
+      max-width: 620px; margin: 0 auto;
+    }
+    .ln-cta-icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      background: linear-gradient(135deg, #0CAF7D, #099268);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 12px 32px rgba(12,175,125,0.35);
+    }
+    .ln-cta-h2 {
+      font-size: clamp(28px, 4vw, 40px); font-weight: 800; color: #1E1E2E;
+      letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px;
+    }
+    .ln-cta-p {
+      font-size: 16px; color: #6B7280; line-height: 1.6; margin-bottom: 36px;
+    }
+    .ln-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+    /* ══════════════════════════════════
+       FOOTER (shared)
+    ══════════════════════════════════ */
+    .site-footer {
+      background: #0a0b12; color: #9CA3AF;
+      padding: 60px 24px 0;
+    }
+    .site-footer .ln-inner { border-bottom: 1px solid rgba(255,255,255,0.07); padding-bottom: 48px; }
+    .footer-cols {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    }
+    .footer-brand-col {}
+    .footer-logo-mark {
+      display: flex; align-items: center; gap: 8px;
+      color: #fff; font-size: 16px; font-weight: 700;
+      text-decoration: none; margin-bottom: 14px;
+    }
+    .footer-brand-desc {
+      font-size: 13px; color: #6B7280; line-height: 1.65; max-width: 240px;
+    }
+    .footer-col h4 {
+      color: #fff; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a {
+      font-size: 14px; color: #9CA3AF; text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: #0CAF7D; }
+    .footer-bottom {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0; font-size: 13px; color: #6B7280;
+    }
+    .footer-legal { display: flex; align-items: center; gap: 8px; }
+    .footer-legal a { color: #6B7280; text-decoration: none; transition: color 0.2s; }
+    .footer-legal a:hover { color: #0CAF7D; }
+    .footer-sep { opacity: 0.4; }
+
+    /* ══════════════════════════════════
+       FADE-UP KEYFRAME (hero)
+    ══════════════════════════════════ */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── Animated icon keyframes ── */
+    @keyframes icon-search {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      30%       { transform: translate(2px, -3px) rotate(-8deg); }
+      60%       { transform: translate(-2px, 2px) rotate(6deg); }
+    }
+    @keyframes icon-bounce {
+      0%, 100% { transform: translateY(0); }
+      40%       { transform: translateY(-6px); }
+      65%       { transform: translateY(-2px); }
+    }
+    @keyframes icon-write {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      25%       { transform: rotate(-4deg) translateY(-2px); }
+      50%       { transform: rotate(0deg) translateY(0); }
+      75%       { transform: rotate(3deg) translateY(-1px); }
+    }
+    @keyframes icon-check {
+      0%, 70%, 100% { stroke-dashoffset: 0; opacity: 1; }
+      85%            { opacity: 0.6; transform: scale(0.95); }
+      95%            { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 900px) {
+      .ln-steps   { grid-template-columns: 1fr; }
+      .ln-features { grid-template-columns: repeat(2, 1fr); }
+      .ln-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-brand-col { grid-column: 1 / -1; }
+      .ln-nav { padding: 0 20px; }
+    }
+    @media (max-width: 600px) {
+      .ln-features { grid-template-columns: 1fr; }
+      .ln-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .footer-cols { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .ln-cta-buttons { flex-direction: column; align-items: stretch; max-width: 320px; margin: 0 auto; }
+      .ln-cta-primary, .ln-cta-secondary { justify-content: center; }
+      .ln-hero-cta { flex-direction: column; align-items: center; }
+      .ln-cta-primary, .ln-cta-secondary { width: 100%; max-width: 300px; justify-content: center; }
+      .ln-action-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="ln-nav">
+    <div class="ln-nav-inner">
+      <a href="landing.html" class="ln-logo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0CAF7D" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+        Lost &amp; Found
+      </a>
+      <div class="ln-nav-btns">
+        <a href="login.html" class="ln-btn-ghost">Log In</a>
+        <a href="login.html?tab=register" class="ln-btn-green">Sign Up Free</a>
+        <a href="login.html" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(239,68,68,0.4);color:rgba(239,68,68,0.85);font-size:12px;font-weight:600;text-decoration:none;letter-spacing:0.03em;transition:background 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.12)'" onmouseout="this.style.background='transparent'">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="ln-hero">
+    <!-- Background orbs -->
+    <div class="ln-orb ln-orb-1"></div>
+    <div class="ln-orb ln-orb-2"></div>
+    <div class="ln-orb ln-orb-3"></div>
+
+    <!-- Floating item icons -->
+    <div class="ln-float-items">
+      <span class="ln-item">🎒</span>
+      <span class="ln-item">📱</span>
+      <span class="ln-item">🔑</span>
+      <span class="ln-item">💳</span>
+      <span class="ln-item">📚</span>
+      <span class="ln-item">👓</span>
+      <span class="ln-item">🎧</span>
+      <span class="ln-item">👜</span>
+    </div>
+
+    <!-- Hero content -->
+    <div style="position:relative;z-index:1;max-width:760px;margin:0 auto;">
+      <div class="ln-hero-badge">
+        <span class="ln-hero-badge-dot"></span>
+        Exclusive to Philander Smith University students
+      </div>
+
+      <h1 class="ln-hero-h1">
+        Find what you lost.<br>
+        <span>Return what you found.</span>
+      </h1>
+
+      <p class="ln-hero-sub">
+        The secure Lost &amp; Found platform for Philander Smith University.
+        Report a missing item or hand in something you found — in seconds.
+      </p>
+
+      <!-- Action cards — always visible, no scroll needed -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto 32px;animation:fade-up 0.6s ease 0.35s both;" class="ln-action-grid">
+
+        <a href="report-lost.html" style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;background:rgba(239,68,68,0.12);border:1.5px solid rgba(239,68,68,0.35);border-radius:16px;padding:24px 22px;text-decoration:none;transition:background 0.2s,border-color 0.2s,transform 0.2s;"
+           onmouseover="this.style.background='rgba(239,68,68,0.2)';this.style.borderColor='rgba(239,68,68,0.7)';this.style.transform='translateY(-3px)';"
+           onmouseout="this.style.background='rgba(239,68,68,0.12)';this.style.borderColor='rgba(239,68,68,0.35)';this.style.transform='';">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2" stroke-linecap="round" style="animation:icon-search 2.4s ease-in-out infinite;"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">Lost something?</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;">Report your missing item and let the campus community help you find it.</div>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;color:#FCA5A5;font-size:13px;font-weight:600;margin-top:4px;">
+            Make a report
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </a>
+
+        <a href="report-found.html" style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;background:rgba(12,175,125,0.12);border:1.5px solid rgba(12,175,125,0.35);border-radius:16px;padding:24px 22px;text-decoration:none;transition:background 0.2s,border-color 0.2s,transform 0.2s;"
+           onmouseover="this.style.background='rgba(12,175,125,0.22)';this.style.borderColor='rgba(12,175,125,0.7)';this.style.transform='translateY(-3px)';"
+           onmouseout="this.style.background='rgba(12,175,125,0.12)';this.style.borderColor='rgba(12,175,125,0.35)';this.style.transform='';">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6EE7B7" stroke-width="2" stroke-linecap="round" style="animation:icon-bounce 2s ease-in-out infinite;"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;">Found something?</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;">Post what you found so the rightful owner can claim it back safely.</div>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;color:#6EE7B7;font-size:13px;font-weight:600;margin-top:4px;">
+            Make a report
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </a>
+
+      </div>
+
+      <div class="ln-hero-cta">
+        <a href="login.html?tab=register" class="ln-cta-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Create Free Account
+        </a>
+        <a href="login.html" class="ln-cta-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Log In
+        </a>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:16px;animation:fade-up 0.6s ease 0.5s both;">
+        Requires a @philander.edu email to register
+      </p>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="ln-scroll-hint">
+      <span>Scroll to explore</span>
+      <svg class="ln-scroll-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section class="ln-section">
+    <div class="ln-inner">
+      <p class="ln-section-label reveal">How It Works</p>
+      <h2 class="ln-section-title reveal">Simple. Fast. Secure.</h2>
+      <p class="ln-section-sub reveal">Three steps is all it takes to report or recover a lost item on campus.</p>
+
+      <div class="ln-steps-wrap">
+        <div class="ln-steps">
+          <div class="ln-step-card reveal">
+            <div class="ln-step-number">1</div>
+            <div class="ln-step-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0CAF7D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="animation:icon-write 2.6s ease-in-out infinite;">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <div class="ln-step-title">Report It</div>
+            <p class="ln-step-text">Lost or found something? Create a post with a photo, description, and location in under a minute. Your report is visible to the entire campus community instantly.</p>
+          </div>
+          <div class="ln-step-card reveal reveal-delay-1">
+            <div class="ln-step-number">2</div>
+            <div class="ln-step-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0CAF7D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="animation:icon-search 2.4s ease-in-out infinite;">
+                <circle cx="11" cy="11" r="7"/>
+                <path d="m16.5 16.5 4.5 4.5"/>
+              </svg>
+            </div>
+            <div class="ln-step-title">Browse &amp; Match</div>
+            <p class="ln-step-text">Search by category, keyword, or location. If you recognise a found item as yours, submit a claim with a description of why it belongs to you.</p>
+          </div>
+          <div class="ln-step-card reveal reveal-delay-2">
+            <div class="ln-step-number">3</div>
+            <div class="ln-step-icon">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0CAF7D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="animation:icon-check 2s ease-in-out infinite;">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <div class="ln-step-title">Reunite</div>
+            <p class="ln-step-text">Campus admins review all claims and verify the rightful owner. Once confirmed, you're notified and can arrange collection. Simple, fair, and secure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="ln-section ln-section-alt">
+    <div class="ln-inner">
+      <p class="ln-section-label reveal">Why It Works</p>
+      <h2 class="ln-section-title reveal">Everything you need to recover what's yours</h2>
+      <p class="ln-section-sub reveal">Designed from the ground up for the campus environment.</p>
+
+      <div class="ln-features">
+        <div class="ln-feature-card reveal">
+          <div class="ln-feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="ln-feature-title">Account-Protected Access</div>
+          <p class="ln-feature-text">Only registered campus users can view reports and submit claims, keeping the system trusted and abuse-free.</p>
+        </div>
+        <div class="ln-feature-card reveal reveal-delay-1">
+          <div class="ln-feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg>
+          </div>
+          <div class="ln-feature-title">Real-Time Listings</div>
+          <p class="ln-feature-text">Posts go live instantly. Search and filter the entire campus report board by item type, location, or keyword.</p>
+        </div>
+        <div class="ln-feature-card reveal reveal-delay-2">
+          <div class="ln-feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="ln-feature-title">Location Tagging</div>
+          <p class="ln-feature-text">Tag the exact building, hall, or area where an item was lost or found to help narrow down the search.</p>
+        </div>
+        <div class="ln-feature-card reveal">
+          <div class="ln-feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="ln-feature-title">Admin Oversight</div>
+          <p class="ln-feature-text">Every claim goes through a human review. Admins verify ownership descriptions before confirming, preventing false claims.</p>
+        </div>
+        <div class="ln-feature-card reveal reveal-delay-1">
+          <div class="ln-feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div class="ln-feature-title">Photo Evidence</div>
+          <p class="ln-feature-text">Upload photos when reporting an item. Visual proof helps others recognise their belongings and speeds up the matching process.</p>
+        </div>
+        <div class="ln-feature-card reveal reveal-delay-2">
+          <div class="ln-feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="ln-feature-title">Claim Tracking</div>
+          <p class="ln-feature-text">Track all your submitted claims in one place. See whether your claim is pending review, confirmed, or if the item was awarded to another claimant.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS STRIP ── -->
+  <section class="ln-stats">
+    <div class="ln-stats-grid">
+      <div class="reveal">
+        <div class="ln-stat-number">500+</div>
+        <div class="ln-stat-label">Items Reported</div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="ln-stat-number">300+</div>
+        <div class="ln-stat-label">Items Reunited</div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="ln-stat-number">24h</div>
+        <div class="ln-stat-label">Avg. Resolution Time</div>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div class="ln-stat-number">100%</div>
+        <div class="ln-stat-label">Campus-Focused</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="ln-cta-section">
+    <div class="ln-cta-box reveal">
+      <div class="ln-cta-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+      </div>
+      <h2 class="ln-cta-h2">Ready to find what matters?</h2>
+      <p class="ln-cta-p">Join your campus community. Report a lost item, return something you found, or browse the board — all in one secure place.</p>
+      <div class="ln-cta-buttons">
+        <a href="login.html?tab=register" class="ln-cta-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          Create Free Account
+        </a>
+        <a href="login.html" class="ln-cta-secondary" style="background:transparent;border:1px solid #E5E7EB;color:#1E1E2E;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Log In
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="ln-inner">
+      <div class="footer-cols">
+        <div class="footer-brand-col">
+          <a href="landing.html" class="footer-logo-mark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0CAF7D" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+            Lost &amp; Found
+          </a>
+          <p class="footer-brand-desc">Helping campus students report, find, and recover lost belongings — quickly, securely, and fairly.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="report-lost.html">Report Lost Item</a></li>
+            <li><a href="report-found.html">Report Found Item</a></li>
+            <li><a href="my-claims.html">My Claims</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Account</h4>
+          <ul>
+            <li><a href="login.html">Log In</a></li>
+            <li><a href="login.html?tab=register">Create Account</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="mailto:obinwannejennifer@gmail.com">Contact Admin</a></li>
+            <li><a href="landing.html">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Campus Lost &amp; Found. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <span class="footer-sep">&middot;</span>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { checkAuth } from './js/router.js';
+
+    // If already logged in, skip landing and go straight to the app
+    checkAuth().then(user => {
+      if (user) window.location.href = 'index.html';
+    });
+
+    // ── Scroll reveal ─────────────────────────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
