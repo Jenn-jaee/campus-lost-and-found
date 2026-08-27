@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'obinwannejennifer@gmail.com';
+    }
+
+    // ── Posts ────────────────────────────────────────────────────────────────
+    match /posts/{postId} {
+      // Anyone can read posts (browse the board, view item detail)
+      allow read: if true;
+
+      // Anyone can create a post (no login required to report)
+      allow create: if true;
+
+      // Owner can update their own post (e.g. cancel); admin can update any;
+      // any authenticated user can set status to 'under-review' when submitting a claim
+      allow update: if request.auth != null
+        && (
+          resource.data.email == request.auth.token.email
+          || isAdmin()
+          || (request.resource.data.status == 'under-review'
+              && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']))
+        );
+
+      // Only admin can delete posts
+      allow delete: if isAdmin();
+    }
+
+    // ── Claims ───────────────────────────────────────────────────────────────
+    match /claims/{claimId} {
+      // Any authenticated user can read claims.
+      // All users are verified PSU students, and the app queries only their own
+      // claims via where('userId', '==', uid) — enforced client-side.
+      allow read: if request.auth != null;
+
+      // Authenticated users can create a claim attributed to themselves
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+
+      // Only admin can update claim status (confirm/dismiss)
+      allow update: if isAdmin();
+
+      // Only admin can delete claims
+      allow delete: if isAdmin();
+    }
+  }
+}
