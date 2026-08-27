@@ -1,0 +1,27 @@
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Environment and config secrets
+.env
+.env.local
+.env.production
+
+# Mac system files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Node (if ever used)
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+
+# Cursor / agent tooling (not part of the app)
+.agents/
+.claude/
+skills-lock.json
