@@ -1,0 +1,9 @@
+{
+  "name": "campus-lost-and-found",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve .",
+    "dev": "npx --yes serve .",
+    "verify:links": "node scripts/verify-detail-links.mjs"
+  }
+}
