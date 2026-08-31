@@ -2,18 +2,20 @@
 
 > A campus-wide lost & found platform for Philander Smith University — report items, get matched automatically, and recover belongings through a fair claims workflow.
 
-<!-- Replace the paths below with your screenshots in assets/screenshots/ -->
-
 <p align="center">
-  <img src="assets/screenshots/01-landing.svg" alt="Landing page — replace with your screenshot" width="45%" />
-  &nbsp;
-  <img src="assets/screenshots/02-browse-home.svg" alt="Browse board — replace with your screenshot" width="45%" />
+  <img src="assets/screenshots/01-landing-hero.jpg" alt="Landing page hero" width="90%" />
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/05-item-detail.svg" alt="Item detail — replace with your screenshot" width="45%" />
+  <img src="assets/screenshots/01-landing-steps.png" alt="How it works — three steps" width="45%" />
   &nbsp;
-  <img src="assets/screenshots/09-admin-dashboard.svg" alt="Admin dashboard — replace with your screenshot" width="45%" />
+  <img src="assets/screenshots/01-landing-features.jpg" alt="Features and stats" width="45%" />
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/02-browse-home.jpg" alt="Browse board" width="45%" />
+  &nbsp;
+  <img src="assets/screenshots/05-item-detail-lost.jpg" alt="Item detail — lost report" width="45%" />
 </p>
 
 **Live demo:** [https://campus-lost-and-found-ecaaf.web.app](https://campus-lost-and-found-ecaaf.web.app) *(deploy with Firebase Hosting)*
@@ -26,7 +28,7 @@
 
 **Campus Lost & Found** is a Software Engineering capstone project built for Philander Smith University. Students and staff can report lost or found items without friction, browse active reports, and rely on automatic keyword matching to surface potential reunions. Logged-in PSU students can submit ownership claims; an admin verifies claims and resolves reports.
 
-This README documents the full system — problem, features, architecture, setup, and deployment — with **screenshot placeholders** you can fill in from `assets/screenshots/`.
+This README documents the full system — problem, features, architecture, setup, and deployment. Screenshots below have **contact emails blurred** for privacy.
 
 ---
 
@@ -94,75 +96,88 @@ Campus Lost & Found is a **responsive web application** (HTML, CSS, vanilla Java
 
 ---
 
-## Screenshots *(SVG placeholders included — swap each `.svg` for your `.png` in `assets/screenshots/`)*
+## Screenshots
+
+> Contact emails are blurred in report screenshots for privacy. Browse cards show **names only** in the live app; email and phone appear on the item detail page.
 
 ### Landing page
-> Hero, value proposition, and entry points for reporting or browsing.
+> Hero, how-it-works steps, and feature highlights for Philander Smith University.
 
-![Landing page](assets/screenshots/01-landing.svg)
+<p align="center">
+  <img src="assets/screenshots/01-landing-hero.jpg" alt="Landing page hero" width="90%" />
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/01-landing-steps.png" alt="Simple. Fast. Secure." width="48%" />
+  &nbsp;
+  <img src="assets/screenshots/01-landing-features.jpg" alt="Feature grid and stats" width="48%" />
+</p>
 
 ---
 
 ### Browse board (home)
-> Active reports grid, status badges, filters, and search.
+> Active reports, filters, search, and status badges.
 
-![Browse home](assets/screenshots/02-browse-home.svg)
+![Browse home](assets/screenshots/02-browse-home.jpg)
 
 ---
 
 ### Report Lost
-> Item type, description, location, date, name, email, optional phone, photo upload.
+> Item details, name, contact fields, and optional photo upload.
 
-![Report lost](assets/screenshots/03-report-lost.svg)
+![Report lost](assets/screenshots/03-report-lost.png)
 
 ---
 
 ### Report Found
 > Same form flow for found items.
 
-![Report found](assets/screenshots/04-report-found.svg)
+![Report found](assets/screenshots/04-report-found.png)
 
 ---
 
-### Item detail
-> Full report metadata, contact info, match banner, and claim / action panel.
+### Item detail — lost report
+> Full metadata, contact info, and poster actions.
 
-![Item detail](assets/screenshots/05-item-detail.svg)
+![Item detail — lost](assets/screenshots/05-item-detail-lost.jpg)
 
 ---
 
-### Match notification
-> Banner when the system links a lost report to a found report.
+### Item detail — match & claim
+> Potential match banner and claim-under-review state.
 
-![Match banner](assets/screenshots/06-match-banner.svg)
+![Item detail — match](assets/screenshots/06-item-detail-match.jpg)
+
+---
+
+### Item detail — cancelled report
+> Withdrawn report with match notification.
+
+![Item detail — cancelled](assets/screenshots/05-item-detail-cancelled.jpg)
 
 ---
 
 ### Login & registration
-> Email/password auth for PSU students.
+> PSU student authentication.
 
-![Login and register](assets/screenshots/07-login-register.svg)
-
----
-
-### My Claims
-> Student view of submitted claims and statuses.
-
-![My claims](assets/screenshots/08-my-claims.svg)
+<p align="center">
+  <img src="assets/screenshots/07-login.png" alt="Login" width="42%" />
+  &nbsp;
+  <img src="assets/screenshots/08-register.png" alt="Create account" width="42%" />
+</p>
 
 ---
 
 ### Admin dashboard
-> All posts, claim review, confirm owner, resolve, delete.
+> Posts table, claim review, confirm owner, resolve, and delete. Resolved reports move to the archive and auto-delete after 30 days.
 
-![Admin dashboard](assets/screenshots/09-admin-dashboard.svg)
+<p align="center">
+  <img src="assets/screenshots/09-admin-active.jpg" alt="Admin dashboard — active board" width="90%" />
+</p>
 
----
-
-### Mobile view *(optional)*
-> Responsive layout on a phone-sized viewport.
-
-![Mobile browse](assets/screenshots/10-mobile-browse.svg)
+<p align="center">
+  <img src="assets/screenshots/09-admin-archive.png" alt="Admin dashboard — resolved archive" width="90%" />
+</p>
 
 ---
 
@@ -371,7 +386,5 @@ Academic project for Philander Smith University. Built with Firebase, Cloudinary
 ---
 
 <p align="center">
-  <sub>Replace screenshot placeholders in <code>assets/screenshots/</code> before sharing the repo publicly.</sub>
+  <sub>Screenshots in <code>assets/screenshots/</code> — contact emails blurred for public sharing.</sub>
 </p>
-
-<!-- repo metadata refresh -->

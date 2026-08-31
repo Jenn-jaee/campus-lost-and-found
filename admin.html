@@ -416,15 +416,28 @@
   function msToTimestamp(val) {
     if (!val) return null;
     if (typeof val.toMillis === 'function') return val.toMillis();
+    if (typeof val.seconds === 'number') return val.seconds * 1000;
     if (typeof val === 'string') return new Date(val).getTime();
     return null;
+  }
+
+  /** Prefer resolvedAt; fall back to createdAt for older resolved posts. */
+  function resolvedTimestamp(post) {
+    return msToTimestamp(post.resolvedAt) || msToTimestamp(post.createdAt);
+  }
+
+  function updateSummaryCounts(posts) {
+    document.getElementById('count-active').textContent   = posts.filter(p => p.status === 'lost' || p.status === 'found').length;
+    document.getElementById('count-review').textContent   = posts.filter(p => p.status === 'under-review').length;
+    document.getElementById('count-claimed').textContent  = posts.filter(p => p.status === 'claimed').length;
+    document.getElementById('count-resolved').textContent = posts.filter(p => p.status === 'resolved').length;
   }
 
   function buildArchiveRow(post, daysLeft) {
     const thumb = post.photoUrl
       ? `<img src="${escapeAttr(post.photoUrl)}" alt="${escapeAttr(post.name)}">`
       : getItemIcon(post.itemType);
-    const resolvedTs = msToTimestamp(post.resolvedAt);
+    const resolvedTs = resolvedTimestamp(post);
     const resolvedStr = resolvedTs ? new Date(resolvedTs).toLocaleDateString() : '—';
     const daysStr = daysLeft <= 0 ? '<span style="color:#EF4444;font-weight:600;">Deleting…</span>'
       : `<span style="color:${daysLeft <= 7 ? '#F59E0B' : '#6B7280'};">${daysLeft}d remaining</span>`;
@@ -463,30 +476,37 @@
 
     const resolved = posts.filter(p => p.status === 'resolved');
 
-    // Auto-delete posts older than 30 days
+    // Auto-delete posts older than 30 days (only remove from list after successful delete)
     const toDelete = resolved.filter(p => {
-      const ts = msToTimestamp(p.resolvedAt);
+      const ts = resolvedTimestamp(p);
       return ts && (now - ts) > THIRTY_DAYS;
     });
+    const deletedIds = new Set();
     if (toDelete.length > 0) {
-      await Promise.all(toDelete.map(p => adminDeletePost(p.id).catch(() => {})));
+      await Promise.all(toDelete.map(async (p) => {
+        try {
+          await adminDeletePost(p.id);
+          deletedIds.add(p.id);
+        } catch (_) {}
+      }));
     }
 
-    const remaining = resolved.filter(p => {
-      const ts = msToTimestamp(p.resolvedAt);
-      return !ts || (now - ts) <= THIRTY_DAYS;
-    });
+    const remaining = resolved.filter(p => !deletedIds.has(p.id));
+    if (deletedIds.size > 0) {
+      posts = posts.filter(p => !deletedIds.has(p.id));
+      updateSummaryCounts(posts);
+    }
 
     if (remaining.length === 0) {
       setArchiveState('empty');
       return;
     }
 
-    remaining.sort((a, b) => (msToTimestamp(b.resolvedAt) || 0) - (msToTimestamp(a.resolvedAt) || 0));
+    remaining.sort((a, b) => (resolvedTimestamp(b) || 0) - (resolvedTimestamp(a) || 0));
 
     const tbody = document.getElementById('archive-table-body');
     tbody.innerHTML = remaining.map(p => {
-      const ts = msToTimestamp(p.resolvedAt);
+      const ts = resolvedTimestamp(p);
       const daysLeft = ts ? Math.ceil((THIRTY_DAYS - (now - ts)) / 86400000) : 30;
       return buildArchiveRow(p, daysLeft);
     }).join('');
@@ -621,11 +641,7 @@
       return;
     }
 
-    document.getElementById('count-active').textContent   = posts.filter(p => p.status === 'lost' || p.status === 'found').length;
-    document.getElementById('count-review').textContent   = posts.filter(p => p.status === 'under-review').length;
-    document.getElementById('count-claimed').textContent  = posts.filter(p => p.status === 'claimed').length;
-    document.getElementById('count-resolved').textContent = posts.filter(p => p.status === 'resolved').length;
-
+    updateSummaryCounts(posts);
     loadTable(currentFilter, posts);
   }
 

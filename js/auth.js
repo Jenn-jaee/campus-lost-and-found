@@ -71,9 +71,13 @@ export function onAuthChange(callback) {
  * @returns {boolean}
  */
 export function isAdmin(user) {
-  return user && user.email === ADMIN_EMAIL;
+  return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 }
 
 export async function sendPasswordReset(email) {
-  return sendPasswordResetEmail(auth, email);
+  const actionCodeSettings = {
+    url: `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, '')}login.html`,
+    handleCodeInApp: false,
+  };
+  return sendPasswordResetEmail(auth, email, actionCodeSettings);
 }

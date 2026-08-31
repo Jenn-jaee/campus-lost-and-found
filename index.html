@@ -190,7 +190,7 @@
     initDropdownMenu(logout);
 
     // ── Session cache (avoids Firestore round-trip on every visit) ────────
-    const CACHE_KEY = 'clf_posts_v1';
+    const CACHE_KEY = 'clf_posts_v2';
     const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
     async function getAllPostsCached() {

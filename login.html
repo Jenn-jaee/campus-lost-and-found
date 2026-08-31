@@ -97,7 +97,7 @@
                 <span class="form-error" id="login-password-error"></span>
               </div>
               <div style="text-align:right;margin-bottom:24px;">
-                <a href="#" id="forgot-pw-link" style="font-size:13px;color:#0CAF7D;text-decoration:none;" onclick="event.preventDefault();var m=document.getElementById('forgot-pw-modal');m.style.display='flex';m.style.alignItems='center';m.style.justifyContent='center';">Forgot password?</a>
+                <a href="#" id="forgot-pw-link" style="font-size:13px;color:#0CAF7D;text-decoration:none;">Forgot password?</a>
               </div>
               <button type="submit" class="btn btn-primary btn-full" id="login-submit-btn">Log In</button>
               <span class="form-error" id="login-general-error" style="display:block;text-align:center;margin-top:12px;"></span>
@@ -290,6 +290,16 @@
       });
     }
     wirePasswordToggle('toggle-login-pw', 'login-password');
+
+    document.getElementById('forgot-pw-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      const loginEmail = document.getElementById('login-email').value.trim();
+      if (loginEmail) document.getElementById('forgot-pw-email').value = loginEmail;
+      const modal = document.getElementById('forgot-pw-modal');
+      modal.style.display = 'flex';
+      modal.style.alignItems = 'center';
+      modal.style.justifyContent = 'center';
+    });
     wirePasswordToggle('toggle-reg-pw',   'reg-password');
 
     // ── Helper: show / clear inline form errors ──────────────────────────
@@ -307,7 +317,9 @@
     // ── Map Firebase error codes to friendly messages ────────────────────
     function loginErrorMsg(code, fallback) {
       const map = {
-        'auth/invalid-credential':  'Invalid email or password.',
+        'auth/invalid-credential':  'Invalid email or password. Use Forgot password? or reset via Firebase Console.',
+        'auth/wrong-password':      'Invalid email or password. Use Forgot password? below.',
+        'auth/user-not-found':      'No account found for this email. Use Create Account first.',
         'auth/too-many-requests':   'Too many attempts. Try again later.',
       };
       return map[code] || fallback;

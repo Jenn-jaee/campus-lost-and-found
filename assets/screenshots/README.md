@@ -1,18 +1,19 @@
-# Screenshot placeholders
+# Screenshots
 
-Add your screenshots here using the filenames below. The main `README.md` references these paths.
+Processed images for the README. Contact emails are blurred on report views for privacy.
 
-| File | What to capture |
-|------|-----------------|
-| `01-landing.png` | Landing page hero — headline, CTA buttons, feature highlights |
-| `02-browse-home.png` | Browse board — filter pills, search bar, report cards grid |
-| `03-report-lost.png` | Report Lost form — item details, name, contact fields |
-| `04-report-found.png` | Report Found form — same layout, found-item copy |
-| `05-item-detail.png` | Item detail — photo, metadata, contact info, claim panel |
-| `06-match-banner.png` | Match notification banner on item detail (optional — use a matched pair) |
-| `07-login-register.png` | Login / Create Account tabs |
-| `08-my-claims.png` | My Claims page with claim status |
-| `09-admin-dashboard.png` | Admin table — posts, claims, resolve/delete actions |
-| `10-mobile-browse.png` | Mobile responsive view of browse page (optional) |
+| File | Screen |
+|------|--------|
+| `01-landing-hero.jpg` | Landing — hero |
+| `01-landing-steps.png` | Landing — how it works |
+| `01-landing-features.jpg` | Landing — features & stats |
+| `02-browse-home.jpg` | Browse board |
+| `03-report-lost.png` | Report lost form |
+| `04-report-found.png` | Report found form |
+| `05-item-detail-lost.jpg` | Item detail — lost |
+| `05-item-detail-cancelled.jpg` | Item detail — cancelled |
+| `06-item-detail-match.jpg` | Item detail — match & claim |
+| `07-login.png` | Login |
+| `08-register.png` | Create account |
 
-**Tips:** Use PNG or JPG. Crop to the browser window. Hide or blur real student emails if sharing publicly.
+Re-run blur + export: `python3 scripts/process-screenshots.py`
